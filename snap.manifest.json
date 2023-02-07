@@ -1,18 +1,18 @@
 {
   "version": "0.7.1",
-  "proposedName": "password Book Snap",
-  "description": "A snap for storing password entries.",
+  "proposedName": "Web3 suite snap",
+  "description": "A decentralized suite to enhance user experience using metamask snaps.",
   "repository": {
     "type": "git",
     "url": "https://github.com/Shubham-0a/secured-storage.git"
   },
   "source": {
-    "shasum": "RBUNsTDDEN7TyYtZ0CakwDbP20U8M68YTI2yaFy92EQ=",
+    "shasum": "HpiX3RRLmSONFmzakJyTD2FdqpjYzwRWzRIkUuBhZLQ=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
         "iconPath": "images/icon.svg",
-        "packageName": "@metamask/password-book-snap",
+        "packageName": "@metamask/address-book-snap",
         "registry": "https://registry.npmjs.org/"
       }
     }

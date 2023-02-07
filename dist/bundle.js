@@ -5,58 +5,35 @@ module.exports.onRpcRequest = async ({
   origin,
   request
 }) => {
-  let state1 = await wallet.request({
+  let state = await wallet.request({
     method: 'snap_manageState',
     params: ['get']
   });
-  let state2 = await wallet.request({
-    method: 'snap_manageState',
-    params: ['get']
-  });
-  if (!state1) {
-    state2 = {
-      textcontent: []
-    };
-    
-    await wallet.request({
-      method: 'snap_manageState',
-      params: ['update', state2]
-    });
-  }
-  if (!state1) {
-    state1 = {
+  if (!state) {
+    state = {
       book: []
     };
     
     await wallet.request({
       method: 'snap_manageState',
-      params: ['update', state1]
+      params: ['update', state]
     });
   }
   switch (request.method) {
     case 'storePassword':
-      state1.book.push({
+      state.book.push({
         name: request.params.nameToStore,
         Password: request.params.PasswordToStore
       });
       await wallet.request({
         method: 'snap_manageState',
-        params: ['update', state1]
-      });
-      return true;
-    case 'storetext':
-      state2.textcontent.push({
-        textToSend: request.params.textToSend
-      });
-      await wallet.request({
-        method: 'snap_manageState',
-        params: ['update', state2]
+        params: ['update', state]
       });
       return true;
     case 'retrievePassword':
-      return state1.book;
+      return state.book;
     case 'hello':
-      let Password_book = state1.book.map(function (item) {
+      let Password_book = state.book.map(function (item) {
         return `${item.name}: ${item.Password}`;
       }).join("\n");
       return wallet.request({
@@ -65,18 +42,6 @@ module.exports.onRpcRequest = async ({
           prompt: `Hello, ${origin}!`,
           description: 'Password book:',
           textAreaContent: Password_book
-        }]
-      });
-    case 'hellochat':
-      
-      
-      
-      return wallet.request({
-        method: 'snap_confirm',
-        params: [{
-          prompt: `Hello, ${origin}!`,
-          description: 'all text stored:',
-          textAreaContent: state2
         }]
       });
     default:

@@ -19,15 +19,13 @@
 
     <div>
       <form id="sign">
-        <input id="alias" placeholder="username">
-        <input id="pass" type="password" placeholder="passphrase">
+        <input id="alias" minlength="8" placeholder="username" required>
+        <input id="pass" minlength="8" type="password" placeholder="passphrase" required>
         <input id="in" type="submit" value="sign in">
         <input id="up" type="button" value="sign up">
       </form>
     </div>
 
-    <!-- <button class="connect">Connect</button>
-    <button class="sendHello">Send Hello</button> -->
     <ul></ul>
 
     <form id="said" style="display: none;">
@@ -72,100 +70,6 @@ gun.on('auth', function(){
   user.get('said').map().once(UI);
   $('#said').show();
 });
-
-
-// async function getPassword () { 
-//       document.getElementById('say').style.display = "block";
-//       let response = []; 
-//       try { 
-//         response = await ethereum.request({
-//           method: 'wallet_invokeSnap', 
-//           params: [snapId, {
-//             method: 'retrievePassword'
-//           }]
-//         })
-//       } catch (err) { 
-//         console.error(err)
-//         alert('Problem happened: ' + err.message || err)
-//       }
-//       document.getElementById('PasswordBook').textContent = ''+response.map(function(item){
-//           return `${item.name}: ${item.Password}`; 
-//         }).join("\n"); 
-//     }
-
-// const snapId = `local:${window.location.href}`;
-
-// const connectButton = document.querySelector('button.connect')
-// const sendButton = document.querySelector('button.sendHello')
-// const sendtext = document.querySelector('input.speak')
-
-// connectButton.addEventListener('click', connect)
-// sendButton.addEventListener('click', send)
-// sendtext.addEventListener('click', storetext)
-
-//     // here we get permissions to interact with and install the snap
-//   async function connect () {
-//     await ethereum.request({
-//       method: 'wallet_enable',
-//       params: [{
-//         wallet_snap: { [snapId]: {} },
-//       }]
-//     })
-//     // getPassword()
-//   }
-
-//   async function send () {
-//     try {
-//       const response = await ethereum.request({
-//         method: 'wallet_invokeSnap',
-//         params: [snapId, {
-//           method: 'hellochat'
-//         }]
-//       })
-//     } catch (err) {
-//       console.error(err)
-//       alert('Problem happened: ' + err.message || err)
-//     }
-//   }
-
-//   async function storetext (e) {
-//     e.preventDefault() // to prevent default form behavior 
-
-//     let textSend = document.getElementById('speak')
-
-//     try { 
-//       // const savedText = await ethereum.request({
-//       //   method: 'wallet_invokeSnap', 
-//       //   params: [snapId, {
-//       //     method: 'retrievePassword'
-//       //   }]
-//       // })
-
-//       // const inputArray = [name.value,Password.value];
-//       // isAdded = savedText.filter(function checkText(item){
-//       //     if (item.name == name.value || item.Password == Password.value)
-//       //       return true;
-//       //   })
-
-//       // if(isAdded == false){
-//         const response = await ethereum.request({
-//           method: 'wallet_invokeSnap', 
-//           params: [snapId, {
-//             method: 'storeText',
-//             params : {
-//               textSend: textSend.value,
-//             }
-//           }]
-//         }) 
-
-//       // name.value = "";
-//       // Password.value = "";
-//       // }
-//       } catch (err) { 
-//         console.error(err)
-//         alert('Problem happened: ' + err.message || err)
-//       }
-//   }
 
 </script>
 
