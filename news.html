@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Wallet address management snap</title>
+  <title>News search engine</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./skstyle.css">
@@ -22,7 +22,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 </style>
 </head>
   <body class="w3-light-grey">
-    <div class="sk-container-center" style="justify-content: center; justify-items: center; align-items: center; align-content: center;">
+    <div class="sk-container-center sk-animate-top" style="justify-content: center; justify-items: center; align-items: center; align-content: center;">
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.png" alt="" style=" background-image: -webkit-linear-gradient(); align-content: center; justify-items: center;" width="100px" height="100px">
     </div>
       <!-- <a href="#" class="w3-bar-item w3-button w3-red w3-mobile"><i class="fa fa-address-book w3-margin-right"></i>Wallet address management snap</a>
@@ -30,13 +30,14 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
     <a href="#addbook" class="w3-bar-item w3-button w3-mobile">My address book</a> -->
 
 
-    <div class="w3-container w3-padding-16 w3-margin-top boxed_t">
+    <div class="w3-container w3-padding-16 w3-margin-top boxed_t sk-animate-bottom">
       <div>
-        <p><b>Popular news</b><br> Check out what's trending today</p>
+        <p><b>Popular news</b><br> Check out what's trending</p>
         <div id="popularNews"></div>
       
     <form class="search">
-      <input class="newsinput" type="text"> <br>
+      <input class="newsinput" type="text"> 
+      <input class="dateinput" type="date">
       <button class="getNews w3-button w3-dark-grey" type="submit"><i class="fa fa-podcast w3-margin-right"></i>Get News</button>
     </form>
     <div class="container">
@@ -55,6 +56,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 
   const searchFrom = document.querySelector('.search');
   const newsinput = document.querySelector('.newsinput');
+  const dateinput = document.querySelector('.dateinput');
   const newsList = document.querySelector('.news-list');
 
   function getNews(e) {
@@ -65,12 +67,13 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
     e.preventDefault()
     const apiKey = 'd1c54e28fb4d4478bc210b1aa89c6670'
     let topic = newsinput.value;
-    let url = `https://newsapi.org/v2/everything?q=${topic}&from=2023-02-01&sortBy=popularity&apiKey=${apiKey}`
+    let date = dateinput.value;
+    let url = `https://newsapi.org/v2/everything?q=${topic}&from=${date}&sortBy=popularity&apiKey=${apiKey}`
+    
 
     fetch(url).then((res) => {
       return res.json()
     }).then((data) => {
-      console.log(data)
       data.articles.forEach(article => {
         let li = document.createElement('li');
         let a = document.createElement('a');
