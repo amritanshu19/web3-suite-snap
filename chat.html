@@ -26,8 +26,8 @@
       </form>
     </div>
 
-    <button class="connect">Connect</button>
-    <button class="sendHello">Send Hello</button>
+    <!-- <button class="connect">Connect</button>
+    <button class="sendHello">Send Hello</button> -->
     <ul></ul>
 
     <form id="said" style="display: none;">
@@ -93,79 +93,79 @@ gun.on('auth', function(){
 //         }).join("\n"); 
 //     }
 
-const snapId = `local:${window.location.href}`;
+// const snapId = `local:${window.location.href}`;
 
-const connectButton = document.querySelector('button.connect')
-const sendButton = document.querySelector('button.sendHello')
-const sendtext = document.querySelector('input.speak')
+// const connectButton = document.querySelector('button.connect')
+// const sendButton = document.querySelector('button.sendHello')
+// const sendtext = document.querySelector('input.speak')
 
-connectButton.addEventListener('click', connect)
-sendButton.addEventListener('click', send)
-sendtext.addEventListener('click', storetext)
+// connectButton.addEventListener('click', connect)
+// sendButton.addEventListener('click', send)
+// sendtext.addEventListener('click', storetext)
 
-    // here we get permissions to interact with and install the snap
-  async function connect () {
-    await ethereum.request({
-      method: 'wallet_enable',
-      params: [{
-        wallet_snap: { [snapId]: {} },
-      }]
-    })
-    // getPassword()
-  }
+//     // here we get permissions to interact with and install the snap
+//   async function connect () {
+//     await ethereum.request({
+//       method: 'wallet_enable',
+//       params: [{
+//         wallet_snap: { [snapId]: {} },
+//       }]
+//     })
+//     // getPassword()
+//   }
 
-  async function send () {
-    try {
-      const response = await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: [snapId, {
-          method: 'hellochat'
-        }]
-      })
-    } catch (err) {
-      console.error(err)
-      alert('Problem happened: ' + err.message || err)
-    }
-  }
+//   async function send () {
+//     try {
+//       const response = await ethereum.request({
+//         method: 'wallet_invokeSnap',
+//         params: [snapId, {
+//           method: 'hellochat'
+//         }]
+//       })
+//     } catch (err) {
+//       console.error(err)
+//       alert('Problem happened: ' + err.message || err)
+//     }
+//   }
 
-  async function storetext (e) {
-    e.preventDefault() // to prevent default form behavior 
+//   async function storetext (e) {
+//     e.preventDefault() // to prevent default form behavior 
 
-    let textSend = document.getElementById('speak')
+//     let textSend = document.getElementById('speak')
 
-    try { 
-      // const savedText = await ethereum.request({
-      //   method: 'wallet_invokeSnap', 
-      //   params: [snapId, {
-      //     method: 'retrievePassword'
-      //   }]
-      // })
+//     try { 
+//       // const savedText = await ethereum.request({
+//       //   method: 'wallet_invokeSnap', 
+//       //   params: [snapId, {
+//       //     method: 'retrievePassword'
+//       //   }]
+//       // })
 
-      // const inputArray = [name.value,Password.value];
-      // isAdded = savedText.filter(function checkText(item){
-      //     if (item.name == name.value || item.Password == Password.value)
-      //       return true;
-      //   })
+//       // const inputArray = [name.value,Password.value];
+//       // isAdded = savedText.filter(function checkText(item){
+//       //     if (item.name == name.value || item.Password == Password.value)
+//       //       return true;
+//       //   })
 
-      // if(isAdded == false){
-        const response = await ethereum.request({
-          method: 'wallet_invokeSnap', 
-          params: [snapId, {
-            method: 'storeText',
-            params : {
-              textSend: textSend.value,
-            }
-          }]
-        }) 
+//       // if(isAdded == false){
+//         const response = await ethereum.request({
+//           method: 'wallet_invokeSnap', 
+//           params: [snapId, {
+//             method: 'storeText',
+//             params : {
+//               textSend: textSend.value,
+//             }
+//           }]
+//         }) 
 
-      // name.value = "";
-      // Password.value = "";
-      // }
-      } catch (err) { 
-        console.error(err)
-        alert('Problem happened: ' + err.message || err)
-      }
-  }
+//       // name.value = "";
+//       // Password.value = "";
+//       // }
+//       } catch (err) { 
+//         console.error(err)
+//         alert('Problem happened: ' + err.message || err)
+//       }
+//   }
 
 </script>
 

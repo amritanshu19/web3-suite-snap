@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>News & Updates</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="icon" type="image/svg" href="./images/icon.svg"/>
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
+.boxed{
+  border: thick double #32a1ce;
+}
+.boxed_t{
+  border: 4mm ridge rgba(211, 220, 50, .6);
+}
+.getNews{
+  margin-top: 10px;
+}
+</style>
+<h3>News & Updates</h3>
+</head>
+  <body class="w3-light-grey">
+    <img class="w3-image"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.svg.png" alt="" style=" background-image: -webkit-linear-gradient(); align-content: center; justify-items: center;" width="100vw" height="100vh">
+    <!-- <a href="#" class="w3-bar-item w3-button w3-red w3-mobile"><i class="fa fa-address-book w3-margin-right"></i>Wallet address management snap</a>
+    <a href="#instructions" class="w3-bar-item w3-button w3-mobile">Instructions</a>
+    <a href="#addbook" class="w3-bar-item w3-button w3-mobile">My address book</a> -->
+    
+
+    <div class="w3-container w3-padding-16 w3-margin-top boxed_t">
+      <div>
+        <p><b>Popular news</b><br> Check out what's trending today</p>
+        <div id="popularNews"></div>
+      
+    <form class="search">
+      <input class="newsinput" type="text"> <br>
+      <button class="getNews w3-button w3-dark-grey" type="submit"><i class="fa fa-podcast w3-margin-right"></i>Get News</button>
+    </form>
+    <div class="container">
+      <ul class="news-list"></ul>
+    </div>
+  </div>
+  </div>
+  
+  
+
+ 
+     
+
+
+    
+  <script>
+    const qsearchFrom = document.querySelector('.search');
+    const input = document.querySelector('.input');
+    const newsList = document.querySelector('.news-list');
+
+    qsearchFrom.addEventListener('submit', retrieve)
+
+    function retrieve(e){
+        if(input.value==''){
+            alert('Input field is empty')
+        }
+        newsList.innerHTML=''
+        e.preventDefault()
+        const apiKey = 'd1c54e28fb4d4478bc210b1aa89c6670'
+        let topic = input.value;
+        let url = `https://newsapi.org/v2/everything?q=${topic}&from=2023-02-01&sortBy=popularity&apiKey=${apiKey}`
+
+        fetch(url).then((res)=>{
+            return res.json()
+        }).then((data)=>{
+            console.log(data)
+            data.articles.forEach(article => {
+                let li = document.createElement('li');
+                let a = document.createElement('a');
+                a.setAttribute('href',article.url);
+                a.setAttribute('target', '_blank');
+                a.textContent = article.title;
+                li.appendChild(a);
+                newsList.appendChild(li);
+            });
+        }).catch((error)=>{
+            alert("Invalid input")
+        })
+    }
+</script>
+</html>
