@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Secure Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./skstyle.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="icon" type="image/svg" href="./images/icon.svg"/>
+</head>
+  <body class="sk-light-grey">
+    <!-- Side Navigation -->
+    <nav class="sk-sidebar sk-bar-block sk-card sk-animate-left sk-center" style="display:none" id="mySidebar">
+      <button class="sk-bar-item sk-button" onclick="sk_close()">Close <i class="fa fa-remove"></i></button>
+      <a href="./chat.html" class="sk-bar-item sk-button">chit chat</a>
+      <a href="./news.html" class="sk-bar-item sk-button">news</a>
+      <a href="./calander.html" class="sk-bar-item sk-button">Events</a>
+      <!-- <a href="#" class="sk-bar-item sk-button">About Us</a> -->
+    </nav>
+
+    <!-- Header -->
+    <header class="sk-container sk-padding" id="myHeader">
+      <i onclick="sk_open()" class="fa fa-bars sk-xlarge sk-button sk-animate-top"></i> 
+      <div class="sk-center">
+        <h1 class="sk-xlarge sk-animate-top" style="text-transform: uppercase; font-weight: bolder;">Secure Password Storage</h1>
+        <img class="image"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/800px-MetaMask_Fox.png" alt="" style=" margin-left: auto; margin-right: auto;" width="100px" height="100px">
+        <h1 class="sk-xlarge sk-animate-bottom">BUILT WITH METAMASK SNAP</h1>
+      </div>
+    </header>
+
+    <!-- input Password box -->
+
+    <div class="sk-container-center" style="display: flex;margin-left: auto; margin-right: auto; width: 100vw;">
+        <div class="sk-display-center sk-padding sk-col l6 m8 sk-animate-bottom">
+            <div class="sk-container sk-red">
+            <h2><i class="fa fa-Password-book sk-margin-right"></i>Secure Your Password</h2>
+            </div>
+            <div class="sk-container sk-white sk-padding-16">
+            <form id="storePassword">
+                <div class="sk-row-padding" style="margin:0 -16px;">
+                <div class="sk-half sk-margin-bottom">
+                    <label for="nameToStore"><i class="fa fa-user-circle-o"></i> Name</label>
+                    <input class="sk-input sk-border" type="text" placeholder="Username" id="nameToStore" name="nameToStore" required>
+                </div>
+                <div class="sk-half">
+                    <label for="PasswordToStore"><i class="fa fa-Password-card"></i> Password</label>
+                    <input class="sk-input sk-border" type="text" placeholder="pass6391@4" id="PasswordToStore" name="PasswordToStore" required>
+                </div>
+                </div>
+                <button class="saveButton sk-button sk-green" type="submit" id="storePassword"><i class="fa fa-paper-plane sk-margin-right"></i> Save</button>
+            </form>
+            <br>
+            <button class="connect sk-button sk-dark-grey"><i class="fa fa-podcast sk-margin-right"></i>Connect</button>
+            <button class="sendHello sk-button sk-dark-grey"><i class="fa fa-random sk-margin-right"></i>Send Hello</button> 
+            <button class="getPassword sk-button sk-dark-grey"><i class="fa fa-key sk-margin-right"></i>Get Password</button>
+            </div>
+            <details>
+            <summary>Instructions</summary>
+            <ul>
+                <li>First, click "Connect". Then, try out the other buttons!</li>
+                <li>Please note that:</li>
+                <ul>
+                <li>
+                    The <code>snap.manifest.json</code> and <code>package.json</code> must be located in the server root directory..
+                </li>
+                <li>
+                    The Snap bundle must be hosted at the location specified by the <code>location</code> field of <code>snap.manifest.json</code>.
+                </li>
+                </ul>
+            </ul>
+            </details>
+            <br/>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="id01" class="sk-modal">
+      <div class="sk-modal-content sk-card-4 sk-animate-top">
+        <header class="sk-container"> 
+          <span onclick="document.getElementById('id01').style.display='none'"
+          class="sk-button sk-display-topright sk-xxlarge"><i class="fa fa-close"></i></span>
+          <h4>Sorry, Please check your Password</h4>
+          <p>it already exist with either same name or password <i class="fa fa-smile-o"></i></p>
+          <h4>do you want to update the existing password<br>
+            <!-- <input> -->
+            <button class="updatePassword sk-button sk-green">update</button>
+          </h4>
+      </div>
+    </div>
+
+    <!-- need to be changed  -->
+      
+    <div class="boxed sk-container ">
+      <p id="passwordkeep" style="display: none;">My Password book</p>
+      <pre id="PasswordBook"></pre>
+    </div>
+
+  <script>
+    const snapId = `local:${window.location.href}`;
+
+    const connectButton = document.querySelector('button.connect')
+    const sendButton = document.querySelector('button.sendHello')
+    const getButton = document.querySelector('button.getPassword');
+    const updateButton = document.querySelector('button.updatePassword'); 
+
+    connectButton.addEventListener('click', connect)
+    sendButton.addEventListener('click', send)
+    getButton.addEventListener('click',getPassword);
+    updateButton.addEventListener('click',updatePassword);
+
+    // here we get permissions to interact with and install the snap
+    async function connect () {
+      await ethereum.request({
+        method: 'wallet_enable',
+        params: [{
+          wallet_snap: { [snapId]: {} },
+        }]
+      })
+      // getPassword()
+    }
+
+    // here we call the snap's "hello" method
+    async function send () {
+      try {
+        const response = await ethereum.request({
+          method: 'wallet_invokeSnap',
+          params: [snapId, {
+            method: 'hello'
+          }]
+        })
+      } catch (err) {
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+    }
+
+    async function updatePassword () {
+        let name = document.getElementById('nameToStore')
+        let Password = document.getElementById('PasswordToStore')
+
+        const response = await ethereum.request({
+          method: 'wallet_invokeSnap', 
+          params: [snapId, {
+            method: 'storePassword',
+            params : {
+              nameToStore: name.value, 
+              PasswordToStore: Password.value
+            }
+          }]
+        })
+
+        name.value = "";
+        Password.value = "";
+
+        document.getElementById('id01').style.display='none'; 
+    }
+
+    async function getPassword () { 
+      document.getElementById('passwordkeep').style.display = "block";
+      let response = []; 
+      try { 
+        response = await ethereum.request({
+          method: 'wallet_invokeSnap', 
+          params: [snapId, {
+            method: 'retrievePassword'
+          }]
+        })
+      } catch (err) { 
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+      document.getElementById('PasswordBook').textContent = ''+response.map(function(item){
+          return `${item.name}: ${item.Password}`; 
+        }).join("\n"); 
+    }
+
+    const storePasswordForm = document.getElementById('storePassword')
+    storePasswordForm.addEventListener('submit', storePassword)
+
+    async function storePassword (e) {
+      e.preventDefault() // to prevent default form behavior 
+
+      let name = document.getElementById('nameToStore')
+      let Password = document.getElementById('PasswordToStore')
+      
+      let isAdded = false;
+
+      try { 
+        const savedData = await ethereum.request({
+          method: 'wallet_invokeSnap', 
+          params: [snapId, {
+            method: 'retrievePassword'
+          }]
+        })
+
+        const inputArray = [name.value,Password.value];
+        isAdded = savedData.filter(function checkData(item){
+            if (item.name == name.value || item.Password == Password.value)
+              return true;
+          })
+
+        if(isAdded == false){
+          const response = await ethereum.request({
+            method: 'wallet_invokeSnap', 
+            params: [snapId, {
+              method: 'storePassword',
+              params : {
+                nameToStore: name.value, 
+                PasswordToStore: Password.value
+              }
+            }]
+          }) 
+
+        name.value = "";
+        Password.value = "";
+        }
+      else{
+        erroroverlap = document.getElementById('id01');
+        erroroverlap.style.display = "block";
+      }
+
+        // getPassword()
+      } catch (err) { 
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+    }
+
+
+  // for navbar
+  // Side navigation
+  function sk_open() {
+    var x = document.getElementById("mySidebar");
+    x.style.width = "100%";
+    x.style.fontSize = "40px";
+    x.style.paddingTop = "10%";
+    x.style.display = "block";
+  }
+  function sk_close() {
+    document.getElementById("mySidebar").style.display = "none";
+  }
+
+  var mybtn = document.getElementsByClassName("testbtn")[0];
+  mybtn.click();
+
+</script>
+</body>
+</html>

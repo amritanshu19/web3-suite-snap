@@ -1,0 +1,26 @@
+{
+  "version": "0.7.1",
+  "proposedName": "password Book Snap",
+  "description": "A snap for storing password entries.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shubham-0a/secured-storage.git"
+  },
+  "source": {
+    "shasum": "HpiX3RRLmSONFmzakJyTD2FdqpjYzwRWzRIkUuBhZLQ=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "iconPath": "images/icon.svg",
+        "packageName": "@metamask/address-book-snap",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "snap_confirm": {},
+    "snap_manageState": {},
+    "endowment:network-access": {}
+  },
+  "manifestVersion": "0.1"
+}

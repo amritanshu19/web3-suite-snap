@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Secure Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./skstyle.css">
+  <!-- <link rel="stylesheet" href="./global.css"> -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="icon" type="image/svg" href="./images/icon.svg"/>
+</head>
+  <body class="sk-light-grey">
+
+<!-- added chat -->
+
+<div>
+    <h1>Chit Chat</h1>
+
+    <div>
+      <form id="sign">
+        <input id="alias" placeholder="username">
+        <input id="pass" type="password" placeholder="passphrase">
+        <input id="in" type="submit" value="sign in">
+        <input id="up" type="button" value="sign up">
+      </form>
+    </div>
+
+    <button class="connect">Connect</button>
+    <button class="sendHello">Send Hello</button>
+    <ul></ul>
+
+    <form id="said" style="display: none;">
+        <input id="say">
+        <input id="speak" type="submit" value="speak">
+    </form>
+
+</div>
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/gun/examples/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gun/sea.js"></script>
+<!-- script src="https://cdn.jsdelivr.net/npm/gun/lib/webrtc.js"></script -->
+<script>
+var gun = Gun(['http://localhost:8765/gun', 'https://gun-manhattan.herokuapp.com/gun']);
+var user = gun.user();
+
+$('#up').on('click', function(e){
+  user.create($('#alias').val(), $('#pass').val());
+});
+
+$('#sign').on('submit', function(e){
+  e.preventDefault();
+  user.auth($('#alias').val(), $('#pass').val());
+});
+$('#said').on('submit', function(e){
+  e.preventDefault();
+  if(!user.is){ return }
+  user.get('said').set($('#say').val());
+  $('#say').val("");
+});
+
+function UI(say, id){
+  var li = $('#' + id).get(0) || $('<li>').attr('id', id).appendTo('ul');
+  $(li).text(say);
+};
+
+gun.on('auth', function(){
+  $('#sign').hide();
+  user.get('said').map().once(UI);
+  $('#said').show();
+});
+
+
+// async function getPassword () { 
+//       document.getElementById('say').style.display = "block";
+//       let response = []; 
+//       try { 
+//         response = await ethereum.request({
+//           method: 'wallet_invokeSnap', 
+//           params: [snapId, {
+//             method: 'retrievePassword'
+//           }]
+//         })
+//       } catch (err) { 
+//         console.error(err)
+//         alert('Problem happened: ' + err.message || err)
+//       }
+//       document.getElementById('PasswordBook').textContent = ''+response.map(function(item){
+//           return `${item.name}: ${item.Password}`; 
+//         }).join("\n"); 
+//     }
+
+const snapId = `local:${window.location.href}`;
+
+const connectButton = document.querySelector('button.connect')
+const sendButton = document.querySelector('button.sendHello')
+const sendtext = document.querySelector('input.speak')
+
+connectButton.addEventListener('click', connect)
+sendButton.addEventListener('click', send)
+sendtext.addEventListener('click', storetext)
+
+    // here we get permissions to interact with and install the snap
+  async function connect () {
+    await ethereum.request({
+      method: 'wallet_enable',
+      params: [{
+        wallet_snap: { [snapId]: {} },
+      }]
+    })
+    // getPassword()
+  }
+
+  async function send () {
+    try {
+      const response = await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: [snapId, {
+          method: 'hellochat'
+        }]
+      })
+    } catch (err) {
+      console.error(err)
+      alert('Problem happened: ' + err.message || err)
+    }
+  }
+
+  async function storetext (e) {
+    e.preventDefault() // to prevent default form behavior 
+
+    let textSend = document.getElementById('speak')
+
+    try { 
+      // const savedText = await ethereum.request({
+      //   method: 'wallet_invokeSnap', 
+      //   params: [snapId, {
+      //     method: 'retrievePassword'
+      //   }]
+      // })
+
+      // const inputArray = [name.value,Password.value];
+      // isAdded = savedText.filter(function checkText(item){
+      //     if (item.name == name.value || item.Password == Password.value)
+      //       return true;
+      //   })
+
+      // if(isAdded == false){
+        const response = await ethereum.request({
+          method: 'wallet_invokeSnap', 
+          params: [snapId, {
+            method: 'storeText',
+            params : {
+              textSend: textSend.value,
+            }
+          }]
+        }) 
+
+      // name.value = "";
+      // Password.value = "";
+      // }
+      } catch (err) { 
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+  }
+
+</script>
+
+</body>
+</html>
