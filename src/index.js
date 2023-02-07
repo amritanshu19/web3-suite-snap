@@ -15,7 +15,7 @@ module.exports.onRpcRequest = async ({ origin, request }) => {
     // initialize state1 if empty and set default data
     await wallet.request({
       method: 'snap_manageState',
-      params: ['update', state],
+      params: ['update', state2],
     });
   }
 
@@ -24,32 +24,33 @@ module.exports.onRpcRequest = async ({ origin, request }) => {
     // initialize state1 if empty and set default data
     await wallet.request({
       method: 'snap_manageState',
-      params: ['update', state],
+      params: ['update', state1],
     });
   }
 
   switch (request.method) {
     case 'storePassword': 
-      state.book.push({
+      state1.book.push({
         name:request.params.nameToStore,
         Password:request.params.PasswordToStore
       });
       await wallet.request({
         method: 'snap_manageState', 
-        params: ['update', state], 
+        params: ['update', state1], 
       }); 
       
       return true; 
     case 'storetext':
-      state.textcontent.push({
+      state2.textcontent.push({
         textToSend:request.params.textToSend,
       });
       await wallet.request({
         method: 'snap_manageState', 
-        params: ['update', state], 
+        params: ['update', state2], 
       }); 
+      return true; 
     case 'retrievePassword': 
-      return state.book; 
+      return state1.book; 
     case 'hello':
       let Password_book = state1.book.map(function(item){
           return `${item.name}: ${item.Password}`; 
@@ -65,16 +66,16 @@ module.exports.onRpcRequest = async ({ origin, request }) => {
         ],
       });
       case 'hellochat':
-        let text_book = state2.textcontent.map(function(item){
-            return `${item}`; 
-          }).join("\n"); 
+        // let text_book = state2.textcontent.map(function(item){
+        //     return `${item}`; 
+        //   }).join("\n"); 
         return wallet.request({
           method: 'snap_confirm',
           params: [
             {
               prompt: `Hello, ${origin}!`,
               description: 'all text stored:',
-              textAreaContent: text_book,
+              textAreaContent: state2,
             },
           ],
         });
